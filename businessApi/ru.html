@@ -1,0 +1,472 @@
+<main id="main">
+    <article class="article">
+        <div class="container">
+            <div class="article__wrapper">
+                <div class="article__text">
+                    <article class="markdown-body entry-content p-5" itemprop="text">
+                        <h1>Документация Exwell API</h1>
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Начало работы</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Все запросы к API Exwell должны содержать параметр <code>key</code> (API key) доступный после регистрации в <a href="/partner/register" title="Партнёрской программе">Партнёрской программе</a>.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr>
+
+                        <p><strong>API URI</strong> <code>https://exwell.com/v1/api</code></p>
+                        <p><strong>Response type</strong> <code>json</code></p>
+                        <hr>
+
+                        <h2>GET REQUESTS</h2>
+
+                        <!--validate-address-->
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>
+                                    <code>/validate-address</code> - Валидация адреса
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Этот запрос определяет правильность введённого адреса</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.com/v1/api/validate-address?key=1QdX7HY2GTZ7HQTHg&amp;currency=USDT&amp;address=0x651bf10b18d1ecaf7753cfe2457ac1aa23de540b</span></code></pre>
+                        <h4><strong>Параметр</strong></h4>
+                        <table class="params">
+                            <tr>
+                                <th>Параметр</th>
+                                <th>Тип</th>
+                                <th>Пример</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>key</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>currency</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>USDT</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>address</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>0x651bf10b18d1ecaf7753cfe2457ac1aa23de540b</code></td>
+                            </tr>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-validate-address">
+                                    <pre class="prettyprint language-html prettyprinted" data-type="get"><code>{
+    "result":true
+}</code></pre>
+                            </div>
+                        </div>
+                        <!--validate-address-->
+
+                        <!--rate-->
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>
+                                    <code>/rate</code> - Получение курса на сумму обмена
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Этот запрос получает текущий курс. Ставка не включает комиссию за транзакцию (майнер), взимаемую с каждой транзакции.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.com/v1/api/rate?key=1QdX7HY2GTZ7HQTHg&amp;from=ZEC&amp;to=BTC&amp;amount=1000</span></code></pre>
+                        <h4><strong>Параметр</strong></h4>
+                        <table class="params">
+                            <tr>
+                                <th>Параметр</th>
+                                <th>Тип</th>
+                                <th>Пример</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>key</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>from</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>ZEC</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>to</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>BTC</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>amount</strong>
+                                </td>
+                                <td><code>float</code></td>
+                                <td><code>1000</code></td>
+                            </tr>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-rate">
+                                    <pre class="prettyprint language-html prettyprinted" data-type="get"><code>{
+  "minamount": 100.4,
+  "maxamount": 121334,
+  "rate": 0.9835947505534923,
+  "withdrawalFee": 0.002 BTC,
+  "result": true
+}</code></pre>
+                            </div>
+                        </div>
+                        <p><code><b>* withdrawalFee</b> - примерная комиссия за вывод. Плавающий параметр.</code></p>
+                        <!--rate-->
+
+                        <!--currencies-->
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>
+                                    <code>/currencies</code> - Список валют
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Этот запрос получает список всех доступных монет.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.com/v1/api/currencies?key=1QdX7HY2GTZ7HQTHg</span></code></pre>
+                        <h4><strong>Параметр</strong></h4>
+                        <table class="params">
+                            <tr>
+                                <th>Параметр</th>
+                                <th>Тип</th>
+                                <th>Пример</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>key</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-currencies">
+                                    <pre class="prettyprint language-html prettyprinted" data-type="get"><code>{
+  "XMR": {
+    "coinName": "Monero",
+    "minamount": 20.01,
+    "maxamount": 23724,
+    "tagname": "",
+    "network":"Monero",
+    "available": true
+  },
+  "ZEC": {
+    "coinName": "Zcash",
+    "minamount": 110.06,
+    "maxamount": 132304,
+    "tagname": "",
+    "network":"Zcash",
+    "available": true
+  },
+  "XRP": {
+    "coinName": "XRP",
+    "minamount": 6180.12,
+    "maxamount": 7343941,
+    "tagname": "TAG",
+    "network":"Ripple",
+    "available": true
+  },
+  "XLM": {
+    "coinName": "Stellar",
+    "minamount": 34429.06,
+    "maxamount": 41095890,
+    "tagname": "MEMO",
+    "network":"Stellar Lumens",
+    "available": true
+  },
+  ...
+}</code></pre>
+                            </div>
+                        </div>
+                        <h4><strong>Примечание</strong></h4>
+                        <p>Если <code>tagname</code> не пустое значение, то для этой валюты тэг обязателен.</p>
+                        <!--currencies-->
+
+                        <!--pairs-->
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>
+                                    <code>/pairs</code> - Список всех пар
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Этот запрос получает список всех доступных для обмена пар.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.com/v1/api/pairs?key=1QdX7HY2GTZ7HQTHg</span></code></pre>
+                        <h4><strong>Параметр</strong></h4>
+                        <table class="params">
+                            <tr>
+                                <th>Параметр</th>
+                                <th>Тип</th>
+                                <th>Пример</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>key</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-pairs">
+                                    <pre class="prettyprint language-html prettyprinted" data-type="get"><code>{
+  "ZEC": [
+    "BTC",
+    "USDT",
+    "USDC",
+    "ETH",
+    "BTCLIGHTNING",
+    "USDTTRC20"
+  ],
+  "DASH": [
+    "USDC",
+    "BTC",
+    "ETH",
+    "USDCTRC20"
+  ],
+  "DOT": [
+    "USDT",
+    "BTC",
+    "USDC"
+  ],
+  ...
+}</code></pre>
+                            </div>
+                        </div>
+                        <!--pairs-->
+
+                        <!--exchange-create-->
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>
+                                    <code>/exchange-create</code> - Создание обмена
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Этот запрос создаёт обмен.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.com/v1/api/exchange-create?key=1QdX7HY2GTZ7HQTHg&amp;from=XMR&amp;to=ZEC&amp;amount=26.4509&amp;destinationAddress=33NWPY7z4vHzMnuyzRJg6hUvMXDw5Y7v9o&amp;refundAddress=87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E</span></code></pre>
+                        <h4><strong>Параметр</strong></h4>
+                        <table class="params">
+                            <tr>
+                                <th>Параметр</th>
+                                <th>Тип</th>
+                                <th>Пример</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>key</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>destinationAddress</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>33NWPY7z4vHzMnuyzRJg6hUvMXDw5Y7v9o</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>destinationTag</strong><span class="label label-optional">optional</span>
+                                </td>
+                                <td><code>string</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>refundAddress</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>refundTag</strong><span class="label label-optional">optional</span>
+                                </td>
+                                <td><code>string</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>from</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>XMR</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>to</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>BTC</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>amount</strong>
+                                </td>
+                                <td><code>float</code></td>
+                                <td><code>26.4509</code></td>
+                            </tr>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-exchange-create">
+                                    <pre class="prettyprint language-html prettyprinted" data-type="get"><code>{
+    'id'             : '43c393b8-1dc6-40e3-ad83-d721bf467ac1',
+    'depositAddress' : '87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E',
+    'depositTag'     : '',
+}</code></pre>
+                            </div>
+                        </div>
+                        <!--exchange-create-->
+
+                        <!--exchange-status-->
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>
+                                    <code>/exchange-status</code> - Получение статуса обмена
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Получение информации о текущем статусе обмена</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.com/v1/api/exchange-status?key=1QdX7HY2GTZ7HQTHg&amp;id=43c393b8-1dc6-40e3-ad83-d721bf467ac1</span></code></pre>
+                        <h4><strong>Параметр</strong></h4>
+                        <table class="params">
+                            <tr>
+                                <th>Параметр</th>
+                                <th>Тип</th>
+                                <th>Пример</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>key</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>id</strong>
+                                </td>
+                                <td><code>string</code></td>
+                                <td><code>43c393b8-1dc6-40e3-ad83-d721bf467ac1</code></td>
+                            </tr>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-exchange-status">
+                                    <pre class="prettyprint language-html prettyprinted" data-type="get"><code>{
+    'status'             : 'deposit_received',
+    'from'               : 'XMR',
+    'to'                 : 'BTC',
+    'depositAddress'     : '87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515EtJ6uxZvWmksLFtMi7qM',
+    'depositTag'         : '',
+    'destinationAddress' : '33NWPY7z4vHzMnuyzRJg6hUvMXDw5Y7v9o',
+    'destinationTag'     : '',
+    'refundAddress'      : '87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E',
+    'refundTag'          : '',
+    'expectedAmountFrom' : '26.4509',
+    "expectedAmountTo"   : '0.24118351760777',
+    "amountFrom"         : '26.4509',
+    "date"               : '01.06.2023 10:24:30',
+    "txId"               : null,
+    "amountTo"           : null,
+    "result"             : true
+}</code></pre>
+                            </div>
+                        </div>
+                        <h4><strong>Примечание</strong></h4>
+                        <p>Список используемых статусов:
+                            <br><code>waiting_deposit</code> - ожидание депозита
+                            <br><code>deposit_received</code> - депозит получен
+                            <br><code>exchanging</code> - в процессе обмена
+                            <br><code>sending</code> - в процессе отправки
+                            <br><code>success</code> - обмен успешно завершен
+                            <br><code>time_expired</code> - вышло время ожидания средств
+                            <br><code>failed</code> - обмен завершился с ошибкой
+                            <br><code>sending_failed</code> - попытка отправки завершилась с ошибкой
+                            <br><code>reverted</code> - клиенту были возвращены его средства</p>
+                        <!--exchange-status-->
+
+                        <hr>
+                        <p>Если возникнут вопросы по интеграции, мы с радостью ответим:<br></p>
+                        <p>© 2022-2024 <a href="https://exwell.com/" title="exwell.com" rel="nofollow">exwell.com</a></p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </article>
+</main>
