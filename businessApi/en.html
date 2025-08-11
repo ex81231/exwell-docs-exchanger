@@ -1,61 +1,526 @@
 <main id="main">
-    <div class="banner banner_blog">
+    <article class="article" style="margin-top: 78px;">
         <div class="container">
-            <div class="banner__header"><h1 class="banner__title">AML / KYC</h1></div>
-        </div>
-    </div>
-    <div class="container docs-text">
-        <div>
-            <div class="col-md-2 hidden-sm hidden-xs"></div>
-            <div>
-                <div class="row">
-                    <div class="col-sm-12 text"><h2>Introduction</h2> <br> To reduce the possibility of fraud and
-                        illegal actions, the Exwell.io platform utilizes all available means to ensure the security of
-                        its clients and partners. A significant element of our security strategy is the detailed
-                        verification of all clients and the protection of financial transactions. AML/KYC methods are
-                        considered a primary mechanism for confirming the legality of actions by both individuals and
-                        organizations. <br><br> The Exwell.io platform actively operates a risk assessment system
-                        capable of automatically detecting suspicious transactions. In the case of suspicions, the
-                        transaction may be suspended, and the client will be asked to undergo the AML/KYC procedure. For
-                        confidentiality reasons, the details of the risk assessment criteria are not disclosed, however,
-                        our system successfully contributes to the prevention of fraud and money laundering. <br><br>
-                        Please note that Exwell.io may use the services of third-party service providers to carry out
-                        AML/KYC procedures. All personal data is securely protected by our privacy policy. <br><br>
-                        Exwell.io reserves the right to transfer data obtained during the AML/KYC process to law
-                        enforcement agencies upon official requests. <br><br> We do not engage in cooperation with
-                        individuals suspected of fraud or money laundering, or those whose funds come from illegal
-                        sources. <br><br>
-                        <h2>AML and KYC Methodology</h2> <br> 1.The Platform performs AML verification for incoming
-                        transactions. <br><br> 2.AML procedures include the use of specialized tools to analyze
-                        cryptocurrency transactions to identify funds with higher risks to the platform. <br><br> 3.If
-                        the analysis of an incoming transaction shows an exceeded risk tolerance, the funds are subject
-                        to additional verification. <br><br> 4.If the additional verification confirms that the funds
-                        are linked to illegal activity or money laundering: <br><br> 4.1.The application is temporarily
-                        suspended. <br><br> 4.2 The user should contact the support service with the transaction number
-                        to undergo verification. During verification, documents for identification, photo or video, as
-                        well as explanations about the origin of funds may be requested. <br><br> 4.3 After analyzing
-                        the provided documents, measures are taken to exclude errors or falsifications. If necessary,
-                        additional checks are performed on questionable transactions. <br><br> 4.4 If the verification
-                        is successful, the funds are returned to the agreed address, less the network fee. <br><br> 5.
-                        The user undertakes to provide the requested materials, to await the results of the verification
-                        and to refrain from claims against the platform. <br><br> 6. If the analysis of cryptocurrency
-                        assets reveals a risk higher than 60% or one of the following tags is detected:DARK SERVICE,
-                        SCAM, STOLEN, MIXING (MIXER), SEXTORTION, RANSOMWARE, HACK, PHISHING, TERRORISM FINANCING,
-                        FRAUD, BLACKLIST, STILL UNDER INVESTIGATION, CYBERCRIME ORGANIZATION, NARCOTICS, CHILD ABUSE,
-                        HUMAN TRAFFICKING, SANCTIONS, then the transaction may be blocked until the KYC process is
-                        completed. <br><br> 7.The Platform reserves the right to share the data collected under AML/KYC
-                        procedures with the relevant authorities upon official request. <br><br> 8. If a user is
-                        inactive for a long period of time and does not undergo AML/KYC, restoration of access to funds
-                        or resumption of transactions is possible only after undergoing KYC. <br><br>
-                        <h2>Disclaimer</h2> <br> Exwell.io emphasizes speed of service and strives to ensure full
-                        transparency of processes. Any changes or updates to the AML/KYC policy are communicated to
-                        users via email or other available communication means and are also posted on the official
-                        Exwell.io website.
-                    </div>
+            <div class="article__wrapper">
+                <div class="article__text">
+                    <article class="markdown-body entry-content p-5" itemprop="text"><h1>Exwell API Documentation</h1>
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Start</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>All requests sent to API Exwell maust include the parameter&nbsp;<code>key</code>&nbsp;(API
+                                    key) available after signing up to our&nbsp;<a href="/partner/register"
+                                                                                   title="Partnership Program">Partnership
+                                        Program</a>.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr>
+                        <p><strong>API URI</strong> <code>https://exwell.io/v1/api</code></p>
+                        <p><strong>Response type</strong> <code>json</code></p>
+                        <hr>
+                        <h2>GET REQUESTS</h2>
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th><code>/validate-address</code> - Address Validation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>This request checks the validity of the address.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.io/v1/api/validate-address?key=1QdX7HY2GTZ7HQTHg&amp;currency=USDT&amp;address=0x651bf10b18d1ecaf7753cfe2457ac1aa23de540b</span></code></pre>
+                        <h4><strong>Parameter</strong></h4>
+                        <table class="params">
+                            <tbody>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td><strong>key</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>currency</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>USDT</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>address</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>0x651bf10b18d1ecaf7753cfe2457ac1aa23de540b</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-validate-address"><pre
+                                    class="prettyprint language-html prettyprinted" data-type="get"><code>{
+    "result":true
+}</code></pre>
+                            </div>
+                        </div>
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th><code>/rate</code> - Exchange rate for transaction amount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>This request gets the current exchange rate. Transaction fee is not included.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.io/v1/api/rate?key=1QdX7HY2GTZ7HQTHg&amp;from=ZEC&amp;to=BTC&amp;amount=1000</span></code></pre>
+                        <h4><strong>Parameter</strong></h4>
+                        <table class="params">
+                            <tbody>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td><strong>key</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>from</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>ZEC</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>to</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>BTC</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>amount</strong></td>
+                                <td><code>float</code></td>
+                                <td><code>1000</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-rate"><pre
+                                    class="prettyprint language-html prettyprinted" data-type="get"><code>{
+  "minamount": 100.4,
+  "maxamount": 121334,
+  "rate": 0.9835947505534923,
+  "withdrawalFee": 0.002 BTC,
+  "result": true
+}</code></pre>
+                            </div>
+                        </div>
+                        <p><code><b>* withdrawalFee</b> - approximate commission for withdrawal. Floating
+                            parameter.</code></p>
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th><code>/currencies</code> - Currency List</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>This request gets the list of all available currencies.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.io/v1/api/currencies?key=1QdX7HY2GTZ7HQTHg</span></code></pre>
+                        <h4><strong>Parameter</strong></h4>
+                        <table class="params">
+                            <tbody>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td><strong>key</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-currencies"><pre
+                                    class="prettyprint language-html prettyprinted" data-type="get"><code>{
+  "XMR": {
+    "coinName": "Monero",
+    "minamount": 20.01,
+    "maxamount": 23724,
+    "tagname": "",
+    "network":"Monero",
+    "available": true
+  },
+  "ZEC": {
+    "coinName": "Zcash",
+    "minamount": 110.06,
+    "maxamount": 132304,
+    "tagname": "",
+    "network":"Zcash",
+    "available": true
+  },
+  "XRP": {
+    "coinName": "XRP",
+    "minamount": 6180.12,
+    "maxamount": 7343941,
+    "tagname": "TAG",
+    "network":"Ripple",
+    "available": true
+  },
+  "XLM": {
+    "coinName": "Stellar",
+    "minamount": 34429.06,
+    "maxamount": 41095890,
+    "tagname": "MEMO",
+    "network":"Stellar Lumens",
+    "available": true
+  },
+  ...
+}</code></pre>
+                            </div>
+                        </div>
+                        <h4><strong>Note</strong></h4>
+                        <p>If the&nbsp;<code>tagname</code>&nbsp;is not an empty value, the tag is a mandatory parameter
+                            for this currency.</p>
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th><code>/pairs</code> - Pairs List</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>This request gets all pairs available for exchange.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.io/v1/api/pairs?key=1QdX7HY2GTZ7HQTHg</span></code></pre>
+                        <h4><strong>Parameter</strong></h4>
+                        <table class="params">
+                            <tbody>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td><strong>key</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-pairs"><pre
+                                    class="prettyprint language-html prettyprinted" data-type="get"><code>{
+  "ZEC": [
+    "BTC",
+    "USDT",
+    "USDC",
+    "ETH",
+    "BTCLIGHTNING",
+    "USDTTRC20"
+  ],
+  "DASH": [
+    "USDC",
+    "BTC",
+    "ETH",
+    "USDCTRC20"
+  ],
+  "DOT": [
+    "USDT",
+    "BTC",
+    "USDC"
+  ],
+  ...
+}</code></pre>
+                            </div>
+                        </div>
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th><code>/exchange-create</code> - Exchange Initiation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>This request creates – initiates - the exchange.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.io/v1/api/exchange-create?key=1QdX7HY2GTZ7HQTHg&amp;from=XMR&amp;to=ZEC&amp;amount=26.4509&amp;destinationAddress=33NWPY7z4vHzMnuyzRJg6hUvMXDw5Y7v9o&amp;refundAddress=87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E</span></code></pre>
+                        <h4><strong>Parameter</strong></h4>
+                        <table class="params">
+                            <tbody>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td><strong>key</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>destinationAddress</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>33NWPY7z4vHzMnuyzRJg6hUvMXDw5Y7v9o</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>destinationTag</strong><span class="label label-optional">optional</span>
+                                </td>
+                                <td><code>string</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong>refundAddress</strong></td>
+                                <td><code>string</code></td>
+                                <td>
+                                    <code>87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>refundTag</strong><span class="label label-optional">optional</span></td>
+                                <td><code>string</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong>from</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>XMR</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>to</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>BTC</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>amount</strong></td>
+                                <td><code>float</code></td>
+                                <td><code>26.4509</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-exchange-create"><pre
+                                    class="prettyprint language-html prettyprinted" data-type="get"><code>{
+    'id'                 : '43c393b8-1dc6-40e3-ad83-d721bf467ac1',
+    'from'               : 'XMR',
+    'to'                 : 'BTC',
+    'expectedAmountFrom' : '26.4509',
+    "expectedAmountTo"   : '0.24118351760777',
+    'depositAddress'     : '87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E',
+    'depositTag'         : '',
+}</code></pre>
+                            </div>
+                        </div>
+                        <hr>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th><code>/exchange-status</code> - Getting exchange status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Getting information about the current exchange status</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <span class="type type__get">GET</span>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">https://exwell.io/v1/api/exchange-status?key=1QdX7HY2GTZ7HQTHg&amp;id=43c393b8-1dc6-40e3-ad83-d721bf467ac1</span></code></pre>
+                        <h4><strong>Parameter</strong></h4>
+                        <table class="params">
+                            <tbody>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td><strong>key</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>1QdX7HY2GTZ7HQTHg</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>id</strong></td>
+                                <td><code>string</code></td>
+                                <td><code>43c393b8-1dc6-40e3-ad83-d721bf467ac1</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>Response</strong> <code>200</code></p>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="success-examples-API_description-exchange-status"><pre
+                                    class="prettyprint language-html prettyprinted" data-type="get"><code>{
+    'status'             : 'deposit_received',
+    'from'               : 'XMR',
+    'to'                 : 'BTC',
+    'depositAddress'     : '87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515EtJ6uxZvWmksLFtMi7qM',
+    'depositTag'         : '',
+    'depositTxId'        : '',
+    'destinationAddress' : '33NWPY7z4vHzMnuyzRJg6hUvMXDw5Y7v9o',
+    'destinationTag'     : '',
+    'refundAddress'      : '87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E',
+    'refundTag'          : '',
+    'expectedAmountFrom' : '26.4509',
+    'expectedAmountTo'   : '0.24118351760777',
+    'amountFrom'         : '26.4509',
+    'date'               : '01.06.2023 10:24:30',
+    'txId'               : null,
+    'amountTo'           : null,
+    'result'             : true
+}</code></pre>
+                            </div>
+                        </div>
+                        <h4><strong>Explanatory Note</strong></h4>
+                        <p>List of used statuses: <br><code>waiting_deposit</code> - waiting for the deposit <br><code>deposit_received</code>
+                            - deposit is received <br><code>exchanging</code> - in the process of exchange <br><code>sending</code>
+                            - in the process of sending <br><code>success</code> - exchange completed successfully
+                            <br><code>time_expired</code> - the waiting time for funds has expired
+                            <br><code>failed</code> - the exchange ended with an error <br><code>sending_failed</code> -
+                            sending attempt failed <br><code>reverted</code> - the funds were returned to the client</p>
+                        <hr>
+                        <p>If you have any questions regarding the integration, be sure to contact us:<br></p>
+                        <p>© 2022-2025 <a href="https://exwell.io/" title="exwell.io" rel="nofollow">exwell.io</a></p>
+                    </article>
                 </div>
             </div>
-            <div class="col-md-2 hidden-sm hidden-xs"></div>
         </div>
-    </div>
-    <div class="clear-md"></div>
+    </article>
+    <style>table.params td {
+        padding: 5px;
+        border: 1px solid #ccc;
+    }
+
+    table {
+        margin-bottom: 20px;
+    }
+
+    #main {
+        margin-top: 100px;
+    }
+
+    code {
+        color: #7371FF;
+    }
+
+    .footer .container {
+        border-top: none;
+    }
+
+    .type {
+        font-family: "Source Sans Pro", sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        display: inline-block;
+        margin: 0 0 5px 0;
+        padding: 4px 5px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        background-color: #3387CC;
+        color: #ffffff;
+    }
+
+    .type__post {
+        background-color: #4070ec;
+    }
+
+    .type__get {
+        background-color: #7371FF;
+    }
+
+    pre.language-html {
+        margin: 0 0 20px 0;
+    }
+
+    pre.prettyprint {
+        width: 95%;
+        padding: 1em;
+        white-space: pre-wrap;
+    }
+
+    pre.prettyprint, code.prettyprint {
+        background-color: #000;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -o-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -khtml-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    pre {
+        background-color: #292b36;
+        color: #ffffff;
+        padding: 10px;
+        border-radius: 6px;
+        position: relative;
+        margin: 10px 0 20px 0;
+        overflow-x: auto;
+    }
+
+    pre code {
+        white-space: pre;
+    }
+
+    .params th {
+        background-color: #f5f5f5;
+        text-align: left;
+        font-family: "Source Sans Pro", sans-serif;
+        font-weight: 700;
+        padding: 4px 8px;
+        border: 1px solid #ccc;
+    }
+
+    .label-optional {
+        float: right;
+        background-color: grey;
+        margin-top: 4px;
+    }
+
+    .label {
+        display: inline;
+        padding: 0.2em 0.6em 0.3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25em;
+        margin-left: 30px;
+    }</style>
 </main>
