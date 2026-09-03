@@ -1,0 +1,983 @@
+<main id="main">
+    <article class="article" style="margin-top: 78px;">
+        <div class="container">
+            <div class="article__wrapper">
+                <div class="article__text">
+                    <article class="markdown-body entry-content p-5" itemprop="text">
+                        <h1>Exwell API Documentation</h1>
+                        <p>Every request must include the query parameter <code>key</code> — the API key from the <a href="/partner/register" title="Partnership Program">partner cabinet</a>. Key format: 32 characters <code>A–Z a–z 0–9</code>. Missing or invalid key → <code>401</code>.</p>
+                        <table class="params docs-intro">
+                            <tbody>
+                            <tr>
+                                <th>API URI</th>
+                                <td><code>https://exwell.io/v1/api</code> — same as <code>https://api.exwell.io/partner/v1/</code></td>
+                            </tr>
+                            <tr>
+                                <th>Response</th>
+                                <td><code>json</code>, except the XML rate feed</td>
+                            </tr>
+                            <tr>
+                                <th>Auth</th>
+                                <td><code>key</code> only. The site <code>refId</code> parameter is <strong>not</strong> read by the API</td>
+                            </tr>
+                            <tr>
+                                <th>Commission</th>
+                                <td>paid only if Partner Fee Rate is set in the cabinet. Otherwise the swap completes with no payout</td>
+                            </tr>
+                            <tr>
+                                <th>Errors</th>
+                                <td><code>401</code> — no <code>key</code> (<code>Key parameter is required!</code>) or unknown key (<code>User does not exist!</code>). Other codes are listed per method</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <nav class="docs-nav" aria-label="Contents">
+                            <p><strong>Contents</strong></p>
+                            <ul>
+                                <li><a href="#exchange">Swap</a>
+                                    <ul>
+                                        <li><a href="#currencies">GET /currencies</a></li>
+                                        <li><a href="#pairs">GET /pairs</a></li>
+                                        <li><a href="#rate">GET /rate</a></li>
+                                        <li><a href="#validate-address">GET /validate-address</a></li>
+                                        <li><a href="#exchange-create">GET /exchange-create</a></li>
+                                        <li><a href="#exchange-status">GET /exchange-status</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#rates-xml">Rates in XML format</a>
+                                    <ul>
+                                        <li><a href="#rate-xml">GET /rate.xml</a></li>
+                                        <li><a href="#rate-xml-v2">GET /partner/v2/rate.xml</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#wallet">Wallet</a>
+                                    <ul>
+                                        <li><a href="#wallet-list">GET /wallet</a></li>
+                                        <li><a href="#wallet-balance">GET /wallet/balance</a></li>
+                                        <li><a href="#wallet-tx">GET /wallet/transaction</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#trx-energy">TRX Energy</a>
+                                    <ul>
+                                        <li><a href="#trx-energy-info">GET /wallet/trx-energy/info</a></li>
+                                        <li><a href="#energy-required">GET /wallet/trx-energy/energy-required</a></li>
+                                        <li><a href="#trx-energy-rent">POST /wallet/trx-energy</a></li>
+                                        <li><a href="#trx-energy-order">GET /wallet/trx-energy/{orderId}</a></li>
+                                        <li><a href="#trx-energy-list">GET /wallet/trx-energy</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <h2 id="exchange">Swap</h2>
+                        <div class="flow">
+                            <p><strong>Call order</strong></p>
+                            <ol>
+                                <li><a href="#currencies">/currencies</a> — available coins</li>
+                                <li><a href="#pairs">/pairs</a> — open pairs</li>
+                                <li><a href="#rate">/rate</a> — quote and limits for an amount</li>
+                                <li><a href="#validate-address">/validate-address</a> — payout address</li>
+                                <li><a href="#exchange-create">/exchange-create</a> — order + deposit address</li>
+                                <li>User sends the deposit</li>
+                                <li><a href="#exchange-status">/exchange-status</a> — poll until a final status</li>
+                            </ol>
+                        </div>
+
+                        <section class="method" id="currencies">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/currencies</code> — Currency list</h3>
+                            <p>Available coins, networks, min/max, and memo/tag names.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/currencies?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN</code></pre>
+                            <p>No extra parameters.</p>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "XMR": {
+    "coinName": "Monero",
+    "minamount": 20.01,
+    "maxamount": 23724,
+    "tagname": "",
+    "network": "Monero",
+    "available": true
+  },
+  "XRP": {
+    "coinName": "XRP",
+    "minamount": 6180.12,
+    "maxamount": 7343941,
+    "tagname": "TAG",
+    "network": "Ripple",
+    "available": true
+  }
+}</code></pre>
+                            <p class="note">If <code>tagname</code> is not empty, the tag is required (<code>destinationTag</code> / <code>refundTag</code>).</p>
+                        </section>
+
+                        <section class="method" id="pairs">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/pairs</code> — Pair list</h3>
+                            <p>Open pairs: key is the source currency, value is the list of destinations.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/pairs?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN</code></pre>
+                            <p>No extra parameters.</p>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "ZEC": ["BTC", "USDT", "USDC", "ETH", "BTCLIGHTNING", "USDTTRC20"],
+  "DASH": ["USDC", "BTC", "ETH", "USDCTRC20"]
+}</code></pre>
+                        </section>
+
+                        <section class="method" id="rate">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/rate</code> — Quote for an amount</h3>
+                            <p>Current pair rate. Does not include the miner withdrawal fee.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/rate?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN&amp;from=ZEC&amp;to=BTC&amp;amount=1000</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>from</strong></td>
+                                    <td><code>string</code></td>
+                                    <td><code>ZEC</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>to</strong></td>
+                                    <td><code>string</code></td>
+                                    <td><code>BTC</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>amount</strong></td>
+                                    <td><code>float</code></td>
+                                    <td><code>1000</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>fix</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>boolean</code></td>
+                                    <td><code>false</code> (default)</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "minamount": 100.4,
+  "maxamount": 121334,
+  "rate": 0.9835947505534923,
+  "withdrawalFee": "0.002 BTC",
+  "fix": false,
+  "result": true
+}</code></pre>
+                            <p class="note"><code>withdrawalFee</code> is an approximate withdrawal fee; it floats.</p>
+                        </section>
+
+                        <section class="method" id="validate-address">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/validate-address</code> — Address validation</h3>
+                            <p>Checks that the address is valid for the payout currency.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/validate-address?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN&amp;currency=USDT&amp;address=0x651bf10b18d1ecaf7753cfe2457ac1aa23de540b</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>currency</strong></td>
+                                    <td><code>string</code></td>
+                                    <td><code>USDT</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>address</strong></td>
+                                    <td><code>string</code></td>
+                                    <td><code>0x651bf10b18d1ecaf7753cfe2457ac1aa23de540b</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "result": true
+}</code></pre>
+                        </section>
+
+                        <section class="method" id="exchange-create">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/exchange-create</code> — Create a swap</h3>
+                            <p>Creates an order. All fields are query parameters (GET).</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/exchange-create?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN&amp;from=XMR&amp;to=BTC&amp;amount=26.4509&amp;fix=false&amp;destinationAddress=33NWPY7z4vHzMnuyzRJg6hUvMXDw5Y7v9o&amp;refundAddress=87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>from</strong></td>
+                                    <td><code>string</code></td>
+                                    <td><code>XMR</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>to</strong></td>
+                                    <td><code>string</code></td>
+                                    <td><code>BTC</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>amount</strong></td>
+                                    <td><code>float</code></td>
+                                    <td><code>26.4509</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>fix</strong></td>
+                                    <td><code>boolean</code></td>
+                                    <td><code>false</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>destinationAddress</strong></td>
+                                    <td><code>string</code></td>
+                                    <td><code>33NWPY7z4vHzMnuyzRJg6hUvMXDw5Y7v9o</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>destinationTag</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>string</code></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>refundAddress</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>string</code></td>
+                                    <td><code>87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>refundTag</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>string</code></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "id": "43c393b8-1dc6-40e3-ad83-d721bf467ac1",
+  "from": "XMR",
+  "to": "BTC",
+  "expectedAmountFrom": "26.4509",
+  "expectedAmountTo": "0.24118351760777",
+  "depositAddress": "87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E",
+  "depositTag": ""
+}</code></pre>
+                        </section>
+
+                        <section class="method" id="exchange-status">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/exchange-status</code> — Swap status</h3>
+                            <p>Current order state. Poll until the status is final.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/exchange-status?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN&amp;id=43c393b8-1dc6-40e3-ad83-d721bf467ac1</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>id</strong></td>
+                                    <td><code>string</code></td>
+                                    <td><code>43c393b8-1dc6-40e3-ad83-d721bf467ac1</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "status": "deposit_received",
+  "from": "XMR",
+  "to": "BTC",
+  "depositAddress": "87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E",
+  "depositTag": "",
+  "depositTxId": "",
+  "destinationAddress": "33NWPY7z4vHzMnuyzRJg6hUvMXDw5Y7v9o",
+  "destinationTag": "",
+  "refundAddress": "87mEgetMnPSMMKsAFRRf7UMKLSdzdke99Rk63PYZv5hYeUmx29gEd9PKbwiQ7ZsYv7AJMKZ3515E",
+  "refundTag": "",
+  "expectedAmountFrom": "26.4509",
+  "expectedAmountTo": "0.24118351760777",
+  "amountFrom": "26.4509",
+  "date": "01.06.2023 10:24:30",
+  "txId": null,
+  "amountTo": null,
+  "result": true
+}</code></pre>
+                            <p class="note"><strong>Statuses:</strong><br>
+                                <code>waiting_deposit</code> — waiting for the deposit<br>
+                                <code>deposit_received</code> — deposit received<br>
+                                <code>exchanging</code> — exchanging<br>
+                                <code>sending</code> — sending<br>
+                                <code>success</code> — completed<br>
+                                <code>time_expired</code> — deposit wait timed out<br>
+                                <code>failed</code> — error<br>
+                                <code>sending_failed</code> — send failed<br>
+                                <code>reverted</code> — funds returned to the client</p>
+                        </section>
+
+                        <h2 id="rates-xml">Rates in XML format</h2>
+                        <p>Rate feed for all open pairs. Not the same as JSON <a href="#rate">/rate</a> (one pair and amount). Response <code>application/xml</code>: root <code>&lt;rates&gt;</code>, items <code>&lt;item&gt;</code>.</p>
+                        <p>v1 and v2 return the same data. The difference is the min/max tag names (limits on the <code>from</code> currency):</p>
+                        <table class="params">
+                            <tbody>
+                            <tr>
+                                <th></th>
+                                <th>v1</th>
+                                <th>v2</th>
+                            </tr>
+                            <tr>
+                                <td><strong>URL</strong></td>
+                                <td><code>https://exwell.io/v1/api/rate.xml</code></td>
+                                <td><code>https://api.exwell.io/partner/v2/rate.xml</code></td>
+                            </tr>
+                            <tr>
+                                <td>minimum</td>
+                                <td><code>&lt;minamount&gt;</code></td>
+                                <td><code>&lt;frommin&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td>maximum</td>
+                                <td><code>&lt;maxamount&gt;</code></td>
+                                <td><code>&lt;frommax&gt;</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p class="note">Other tags are the same: <code>from</code>, <code>to</code>, <code>in</code>, <code>out</code>, <code>amount</code>, <code>param</code>. The site prefix <code>/v1/api</code> does <strong>not</strong> rewrite to v2.</p>
+                        <div class="flow">
+                            <p><strong>Call order</strong></p>
+                            <ol>
+                                <li>Put <code>key</code> into the feed URL</li>
+                                <li>Fetch XML on your schedule</li>
+                            </ol>
+                        </div>
+
+                        <section class="method" id="rate-xml">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/rate.xml</code> — XML rates v1</h3>
+                            <p>Same public prefix <code>/v1/api</code>.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/rate.xml?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN</code></pre>
+                            <p>No extra parameters.</p>
+                            <p><strong>Response</strong> <code>200</code> <code>application/xml</code></p>
+                            <pre class="prettyprint" data-type="get"><code>&lt;rates&gt;
+  &lt;item&gt;
+    &lt;from&gt;BTC&lt;/from&gt;
+    &lt;to&gt;USDTTRC20&lt;/to&gt;
+    &lt;in&gt;1&lt;/in&gt;
+    &lt;out&gt;68420.15&lt;/out&gt;
+    &lt;minamount&gt;0.001&lt;/minamount&gt;
+    &lt;maxamount&gt;5&lt;/maxamount&gt;
+    &lt;amount&gt;150000&lt;/amount&gt;
+    &lt;param&gt;floating&lt;/param&gt;
+  &lt;/item&gt;
+&lt;/rates&gt;</code></pre>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Tag</th>
+                                    <th>Type</th>
+                                    <th>Meaning</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>from</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>source currency</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>to</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>destination currency</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>in</strong></td>
+                                    <td><code>int</code></td>
+                                    <td>input coefficient, always <code>1</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>out</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>rate: how much <code>to</code> for <code>in</code> units of <code>from</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>minamount</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>minimum on <code>from</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>maxamount</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>maximum on <code>from</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>amount</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>reserve</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>param</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>always <code>floating</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="method" id="rate-xml-v2">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/partner/v2/rate.xml</code> — XML rates v2</h3>
+                            <p>Same pairs and values as <a href="#rate-xml">v1</a>. Limits use <code>frommin</code> / <code>frommax</code>. The site prefix <code>/v1/api</code> does <strong>not</strong> rewrite here — call the API host.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://api.exwell.io/partner/v2/rate.xml?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN</code></pre>
+                            <p>No extra parameters.</p>
+                            <p><strong>Response</strong> <code>200</code> <code>application/xml</code></p>
+                            <pre class="prettyprint" data-type="get"><code>&lt;rates&gt;
+  &lt;item&gt;
+    &lt;from&gt;BTC&lt;/from&gt;
+    &lt;to&gt;USDTTRC20&lt;/to&gt;
+    &lt;in&gt;1&lt;/in&gt;
+    &lt;out&gt;68420.15&lt;/out&gt;
+    &lt;frommin&gt;0.001&lt;/frommin&gt;
+    &lt;frommax&gt;5&lt;/frommax&gt;
+    &lt;amount&gt;150000&lt;/amount&gt;
+    &lt;param&gt;floating&lt;/param&gt;
+  &lt;/item&gt;
+&lt;/rates&gt;</code></pre>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Tag</th>
+                                    <th>Type</th>
+                                    <th>Meaning</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>from</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>source currency</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>to</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>destination currency</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>in</strong></td>
+                                    <td><code>int</code></td>
+                                    <td>input coefficient, always <code>1</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>out</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>rate: how much <code>to</code> for <code>in</code> units of <code>from</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>frommin</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>minimum on <code>from</code> (v1: <code>minamount</code>)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>frommax</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>maximum on <code>from</code> (v1: <code>maxamount</code>)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>amount</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>reserve</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>param</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>always <code>floating</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <h2 id="wallet">Wallet</h2>
+                        <p>Cabinet addresses (main and test) and the USDT balance inside the wallet resource. TRX Energy rental is charged from <strong>this balance</strong>, not on-chain from the client address. TRON test network is <strong>Nile</strong> (response <code>TESTNET</code>).</p>
+                        <div class="flow">
+                            <p><strong>Call order if you need energy</strong></p>
+                            <ol>
+                                <li><a href="#wallet-list">GET /wallet</a> — MAINNET and TESTNET addresses</li>
+                                <li>Deposit USDT TRC20 to the address for that network</li>
+                                <li><a href="#wallet-balance">GET /wallet/balance</a> — enough USDT?</li>
+                                <li>Then the <a href="#trx-energy">TRX Energy</a> section</li>
+                            </ol>
+                        </div>
+
+                        <section class="method" id="wallet-list">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/wallet</code> — Main and test wallets</h3>
+                            <p>Partner addresses: <code>MAINNET</code> and <code>TESTNET</code> (Nile).</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/wallet?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN</code></pre>
+                            <p>No extra parameters.</p>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>[
+  {
+    "address": "TExWKszFWYTKZH8LYiovAPKzS3L9MLZ4kw",
+    "type": "MAIN",
+    "blockchain": "TRON",
+    "network": "MAINNET"
+  },
+  {
+    "address": "TYsbVzAGJrDvDm8LxngY1uBYxHzpQKWzRv",
+    "type": "MAIN",
+    "blockchain": "TRON",
+    "network": "TESTNET"
+  }
+]</code></pre>
+                        </section>
+
+                        <section class="method" id="wallet-balance">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/wallet/balance</code> — Balance</h3>
+                            <p>Available balance inside the resource. <code>address</code> is yours, from <a href="#wallet-list">GET /wallet</a>.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/wallet/balance?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN&amp;address=TExWKszFWYTKZH8LYiovAPKzS3L9MLZ4kw&amp;asset=USDT</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>address</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>your TRON address</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>asset</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>string</code></td>
+                                    <td><code>USDT</code> (default)</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "balance": 12.50,
+  "asset": "USDT"
+}</code></pre>
+                            <p class="errors"><strong>Errors:</strong> <code>404</code> — not your address.</p>
+                        </section>
+
+                        <section class="method" id="wallet-tx">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/wallet/transaction</code> — Wallet transactions</h3>
+                            <p>Deposits and charges. Energy rental is <code>HOLD</code> first, then <code>SUCCESS</code>.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/wallet/transaction?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN&amp;address=TExWKszFWYTKZH8LYiovAPKzS3L9MLZ4kw&amp;pageNumber=0&amp;pageSize=10</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>address</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>your TRON address</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>pageNumber</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>int</code></td>
+                                    <td><code>0</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>pageSize</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>int</code></td>
+                                    <td><code>10</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "content": [
+    {
+      "serviceType": "TRX_ENERGY",
+      "amount": -0.86,
+      "createdAt": "2026-08-26T12:00:00",
+      "asset": "USDT",
+      "status": "SUCCESS"
+    }
+  ],
+  "totalElements": 1,
+  "totalPages": 1,
+  "number": 0,
+  "size": 10
+}</code></pre>
+                            <p class="note"><code>serviceType</code>: <code>DEPOSIT</code>, <code>TRX_ENERGY</code>. <code>status</code>: <code>HOLD</code>, <code>SUCCESS</code>.</p>
+                            <p class="errors"><strong>Errors:</strong> <code>404</code> — not your address.</p>
+                        </section>
+
+                        <h2 id="trx-energy">TRX Energy</h2>
+                        <p>TRON energy rental. Charged from the cabinet USDT balance. Query <code>network=TESTNET</code> — Nile; <code>MAINNET</code> or omit <code>network</code> — mainnet (estimate, rent, list, and order status). Look up a Nile order with <code>network=TESTNET</code>.</p>
+                        <div class="flow">
+                            <p><strong>Call order</strong></p>
+                            <ol>
+                                <li><a href="#trx-energy-info">/wallet/trx-energy/info</a> — limits</li>
+                                <li><a href="#energy-required">/wallet/trx-energy/energy-required</a> — price; <code>address</code> is the energy recipient</li>
+                                <li><a href="#trx-energy-rent">POST /wallet/trx-energy</a> — order, status <code>PROCESS</code> immediately</li>
+                                <li><a href="#trx-energy-order">GET /wallet/trx-energy/{orderId}</a> — poll <code>PROCESS</code> → <code>SUCCESS</code> / <code>ERROR</code></li>
+                            </ol>
+                        </div>
+
+                        <section class="method" id="trx-energy-info">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/wallet/trx-energy/info</code> — Rental limits</h3>
+                            <p>Periods and min/max energy. Balance is not here — see <a href="#wallet-balance">/balance</a>.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/wallet/trx-energy/info?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN</code></pre>
+                            <p>No extra parameters.</p>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "periods": ["H1", "D1", "D3", "D30"],
+  "minEnergy": 10000,
+  "maxEnergy": 1000000
+}</code></pre>
+                            <p class="note"><code>periods</code> is informational. There is no <code>period</code> field on the rental body.</p>
+                        </section>
+
+                        <section class="method" id="energy-required">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/wallet/trx-energy/energy-required</code> — Estimate</h3>
+                            <p>Rental price. <code>address</code> is the energy <strong>recipient</strong> (does not have to be the partner wallet). Without <code>energyAmount</code> the server estimates that address’s need. Omit <code>network</code> — MAINNET.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/wallet/trx-energy/energy-required?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN&amp;address=TExWKszFWYTKZH8LYiovAPKzS3L9MLZ4kw&amp;energyAmount=65000&amp;network=MAINNET</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>address</strong></td>
+                                    <td><code>string</code></td>
+                                    <td>recipient TRON address</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>energyAmount</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>int</code></td>
+                                    <td><code>65000</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>network</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>string</code></td>
+                                    <td><code>MAINNET</code> or <code>TESTNET</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "recipientAddress": "TExWKszFWYTKZH8LYiovAPKzS3L9MLZ4kw",
+  "energyRequired": 65000,
+  "price": 0.86,
+  "priceSymbol": "USDT"
+}</code></pre>
+                            <p class="note"><code>price</code> is the amount charged, markup already included.</p>
+                            <p class="errors"><strong>Errors:</strong> <code>409</code> — bad address or amount out of limits.</p>
+                        </section>
+
+                        <section class="method" id="trx-energy-rent">
+                            <h3 class="method__title"><span class="type type__post">POST</span> <code>/wallet/trx-energy</code> — Rent energy</h3>
+                            <p>Creates an order. Status is <code>PROCESS</code> immediately — poll by <code>id</code> on the same network (omit <code>network</code> and status is looked up on MAINNET).</p>
+                            <pre class="prettyprint" data-type="post"><code>https://exwell.io/v1/api/wallet/trx-energy?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN&amp;network=MAINNET</code></pre>
+                            <p><strong>Body</strong> <code>application/json</code></p>
+                            <pre class="prettyprint" data-type="post"><code>{
+  "recipients": [
+    {
+      "address": "TExWKszFWYTKZH8LYiovAPKzS3L9MLZ4kw",
+      "energy": 65000
+    }
+  ]
+}</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>network</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>string</code></td>
+                                    <td><code>MAINNET</code> or <code>TESTNET</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>recipients</strong> <em>body</em></td>
+                                    <td><code>object[]</code></td>
+                                    <td><code>[{"address":"TAddr...","energy":65000}]</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="post"><code>[
+  {
+    "id": 48,
+    "recipientAddress": "TExWKszFWYTKZH8LYiovAPKzS3L9MLZ4kw",
+    "rentEnergy": 65000.0,
+    "sellingPrice": 0.86,
+    "sellingPriceSymbol": "USDT",
+    "status": "PROCESS",
+    "createdAt": "2026-08-26T12:00:00"
+  }
+]</code></pre>
+                            <p class="errors"><strong>Errors:</strong> <code>409</code> — insufficient balance; amount out of limits (see <code>info</code>); bad address; more than 10 recipients.</p>
+                        </section>
+
+                        <section class="method" id="trx-energy-order">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/wallet/trx-energy/{orderId}</code> — Order status</h3>
+                            <p>Poll a single order. Omit <code>network</code> or pass <code>MAINNET</code> — mainnet; Nile — <code>network=TESTNET</code>.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/wallet/trx-energy/48?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>orderId</strong> <em>path</em></td>
+                                    <td><code>int</code></td>
+                                    <td><code>48</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>network</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>string</code></td>
+                                    <td><code>MAINNET</code> or <code>TESTNET</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "id": 48,
+  "recipientAddress": "TExWKszFWYTKZH8LYiovAPKzS3L9MLZ4kw",
+  "rentEnergy": 65000.0,
+  "sellingPrice": 0.86,
+  "sellingPriceSymbol": "USDT",
+  "status": "SUCCESS",
+  "createdAt": "2026-08-26T12:00:00"
+}</code></pre>
+                            <p class="note">Statuses: <code>PROCESS</code> — delegating, <code>SUCCESS</code> — energy on the address, <code>ERROR</code> — failed.</p>
+                            <p class="errors"><strong>Errors:</strong> <code>404</code> or <code>409</code> — <code>Order not found</code>.</p>
+                        </section>
+
+                        <section class="method" id="trx-energy-list">
+                            <h3 class="method__title"><span class="type type__get">GET</span> <code>/wallet/trx-energy</code> — Order list</h3>
+                            <p>Rental history. Same path as POST — GET method. <code>network=TESTNET</code> — Nile; omit <code>network</code> or <code>MAINNET</code> — mainnet.</p>
+                            <pre class="prettyprint" data-type="get"><code>https://exwell.io/v1/api/wallet/trx-energy?key=Kq8WmP2nXrT5vLcYhB7jFdZuAs4gE9oN&amp;pageNumber=0&amp;pageSize=10&amp;network=MAINNET</code></pre>
+                            <h4>Parameters</h4>
+                            <table class="params">
+                                <tbody>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>pageNumber</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>int</code></td>
+                                    <td><code>0</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>pageSize</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>int</code></td>
+                                    <td><code>10</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>network</strong> <span class="label label-optional">optional</span></td>
+                                    <td><code>string</code></td>
+                                    <td><code>MAINNET</code> or <code>TESTNET</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>Response</strong> <code>200</code></p>
+                            <pre class="prettyprint" data-type="get"><code>{
+  "content": [
+    {
+      "id": 48,
+      "recipientAddress": "TExWKszFWYTKZH8LYiovAPKzS3L9MLZ4kw",
+      "rentEnergy": 65000.0,
+      "sellingPrice": 0.86,
+      "sellingPriceSymbol": "USDT",
+      "status": "SUCCESS",
+      "createdAt": "2026-08-26T12:00:00"
+    }
+  ],
+  "totalElements": 1,
+  "totalPages": 1,
+  "number": 0,
+  "size": 10
+}</code></pre>
+                        </section>
+
+                        <hr>
+                        <p>If you have integration questions, we will be happy to help.</p>
+                        <p>© 2022-2026 <a href="https://exwell.io/" title="exwell.io" rel="nofollow">exwell.io</a></p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </article>
+    <style>table.params td {
+        padding: 5px;
+        border: 1px solid #ccc;
+    }
+
+    table {
+        margin-bottom: 20px;
+    }
+
+    #main {
+        margin-top: 100px;
+    }
+
+    h2, h3 {
+        scroll-margin-top: 110px;
+    }
+
+    code {
+        color: #7371FF;
+    }
+
+    .footer .container {
+        border-top: none;
+    }
+
+    .docs-intro th {
+        width: 140px;
+        vertical-align: top;
+    }
+
+    .docs-nav {
+        background: #f7f7fb;
+        border-radius: 8px;
+        padding: 12px 20px 16px;
+        margin: 24px 0 32px;
+    }
+
+    .docs-nav p {
+        margin: 0 0 8px;
+    }
+
+    .docs-nav ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+    .docs-nav li {
+        margin: 3px 0;
+    }
+
+    .flow {
+        background: #f7f7fb;
+        border-radius: 8px;
+        padding: 12px 20px 4px;
+        margin: 0 0 28px;
+    }
+
+    .flow p {
+        margin: 0;
+    }
+
+    .method {
+        margin: 0 0 36px;
+        padding-top: 8px;
+        border-top: 1px solid #eee;
+    }
+
+    .method__title {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.15em;
+        margin: 16px 0 8px;
+    }
+
+    .method__title .type {
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    .note, .errors {
+        margin-top: 8px;
+    }
+
+    .type {
+        font-family: "Source Sans Pro", sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        display: inline-block;
+        margin: 0 0 5px 0;
+        padding: 4px 5px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        background-color: #3387CC;
+        color: #ffffff;
+    }
+
+    .type__post {
+        background-color: #4070ec;
+    }
+
+    .type__get {
+        background-color: #7371FF;
+    }
+
+    pre.language-html {
+        margin: 0 0 20px 0;
+    }
+
+    pre.prettyprint {
+        width: 95%;
+        padding: 1em;
+        white-space: pre-wrap;
+    }
+
+    pre.prettyprint, code.prettyprint {
+        background-color: #000;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -o-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -khtml-border-radius: 8px;
+        border-radius: 8px;
+    }
+
+    pre {
+        background-color: #292b36;
+        color: #ffffff;
+        padding: 10px;
+        border-radius: 6px;
+        position: relative;
+        margin: 10px 0 20px 0;
+        overflow-x: auto;
+    }
+
+    pre code {
+        white-space: pre;
+    }
+
+    .params th {
+        background-color: #f5f5f5;
+        text-align: left;
+        font-family: "Source Sans Pro", sans-serif;
+        font-weight: 700;
+        padding: 4px 8px;
+        border: 1px solid #ccc;
+    }
+
+    .label-optional {
+        float: right;
+        background-color: grey;
+        margin-top: 4px;
+    }
+
+    .label {
+        display: inline;
+        padding: 0.2em 0.6em 0.3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25em;
+        margin-left: 30px;
+    }</style>
+</main>
