@@ -1,7 +1,9 @@
 <main id="main">
     <div class="banner banner_blog">
         <div class="container">
-            <div class="banner__header"><h1 class="banner__title">AML / KYC</h1></div>
+            <div class="banner__header">
+                <h1 class="banner__title">AML / KYC</h1>
+            </div>
         </div>
     </div>
     <div class="container docs-text">
@@ -10,20 +12,171 @@
             <div>
                 <div class="row">
                     <div class="col-sm-12 text">
-                        <h2>1. General Provisions</h2><br>Exwell provides crypto-to-crypto exchange services, adhering to the principles of privacy, transparency, and user autonomy. The service strives to ensure a secure environment for operations while simultaneously complying with international standards for anti-money laundering, countering the financing of terrorism, and sanction restrictions.
-                        <br><br><h2>2. Operating Model and Privacy</h2><br>Exwell is focused on minimizing the collection of users' personal data. Under standard conditions, operations can be carried out without undergoing identity verification (KYC) procedures. At the same time, the service applies internal compliance control mechanisms that allow for regulatory compliance without excessive interference with user privacy.
-                        <br><br><h2>3. AML Transaction Monitoring</h2><br>All transactions passing through Exwell are automatically analyzed using third-party blockchain analytics tools, including AMLBot, Crystal, and Elliptic. This verification assesses the origin of funds, transaction history, and matches against international databases and risk categories. Each transaction is assigned a Risk Score, used as part of a risk-based approach.
-                        <br><br><h2>4. Risk-Based Approach</h2><br>The decision to process a transaction depends on the identified risk level. Transactions with a Risk Score up to 70% are processed in the standard manner; Transactions with a Risk Score of 70% and above may be temporarily suspended for additional verification, including KYC and/or Source of Funds (SoF) confirmation. In addition to the numerical Risk Score, the service also considers extra risk labels, including links to stolen funds, fraud, ransomware, darknet resources, mixing services, sanctioned entities, and other high-risk sources.
-                        <br><br><h2>5. Additional Verification</h2><br>If a transaction is identified as potentially risky, Exwell reserves the right to initiate an enhanced review. Within such a review, the following actions may be taken: Manual transaction analysis by compliance specialists; Request for information regarding the source of funds (Source of Funds); Request to undergo the identity verification procedure (KYC). Until the verification is completed, the transaction and associated funds may remain temporarily suspended.
-                        <br><br><h2>6. When KYC May Be Required</h2><br>Exwell reserves the right to request a one-time KYC procedure in exceptional cases, including regulatory requirements, law enforcement requests, court orders, sanctions checks, and other circumstances indicating a need for additional user identification. In such cases, the user may be directed to a verified compliance partner to complete the identity verification procedure. The verification period typically takes up to 3 days. If the user refuses to undergo the requested verification, the operation may be canceled and funds returned, minus applicable network fees.
-                        <br><br><h2>7. Processing of Personal Data</h2><br>Exwell does not store KYC documents or other personal data of users on its own servers. Identification procedures are performed by third-party partners in accordance with applicable legal requirements, including GDPR and other international data protection standards.
-                        <br><br><h2>8. Requested Materials</h2><br>As part of an additional verification, the user may be required to provide documents and information necessary to complete the compliance procedure. For KYC, the following may be requested: A photo or scan of an identity document (passport, national ID, or driver’s license); A photo of the user holding the identity document. To confirm the source of funds (Source of Funds), the following may be requested: Screenshots or statements from the wallet from which the transaction was sent; Transaction history confirming the origin of funds; Screenshots of accounts from cryptocurrency exchanges or services through which the funds were received; An explanation of the source of funds. The service reserves the right to request additional materials if necessary to complete the check.
-                        <br><br><h2>9. Verification Timelines</h2><br>After receiving all necessary materials, the check typically takes up to 3 business days. Until the required information is received and the verification is completed, the transaction may remain temporarily suspended.
-                        <br><br><h2>10. Refund Terms</h2><br>Based on the verification results, the following outcomes are possible: Completion of the exchange operation if no violations are found; Return of funds to the sender if the operation cannot be performed or the user refuses the verification procedure; Return of funds to the rightful owner if the service receives an official request or mandatory order from competent law enforcement confirming the illegal origin of funds. In the event of a return, funds are sent to the appropriate address in accordance with the verification results and applicable legal requirements. If the return is made to the sender, funds are transferred to the sender's original address within 24 hours after the check is completed; only the network fee required for the blockchain transaction may be withheld.
-                        <br><br><h2>11. Fund Retention Period</h2><br>The retention period depends on the nature of the check and the circumstances of the specific case. In a standard check, funds may be held until the user provides all necessary information and the check is concluded. In certain cases, the retention period may be extended if required to comply with legislation or to execute official law enforcement requests.
-                        <br><br><h2>12. Service Usage Restrictions</h2><br>Exwell does not support or permit the use of the service for money laundering, terrorist financing, or other illegal activities. The service does not cooperate with individuals or organizations involved in fraud, sanctions violations, or other unlawful acts. User funds are not frozen except in cases expressly provided by law, court orders, or mandatory regulatory requirements.
-                        <br><br><h2>13. For Victims of Theft</h2><br>If you are a victim of cryptocurrency theft and suspect the funds were transferred through Exwell, you must contact support and provide a detailed description of the situation along with available blockchain evidence. Additionally, documents from law enforcement regarding the relevant case may be requested. Upon receiving an official legal request, Exwell may assist in tracking the transaction within its authority and applicable law. If the funds have already been exchanged, the service's actions may be limited to the destination currency and carried out solely based on an official legal request.
-                        <br><br><h2>14. Final Provisions</h2><br>Exwell strives to maintain a balance between user financial privacy and fulfilling regulatory obligations. Use of the service signifies the user's agreement with this KYC/AML Policy.
+
+                        <h2>1. General provisions</h2><br>
+                        Exwell provides services via the exwell.io platform, including crypto-to-crypto exchange,
+                        acceptance of incoming transfers to a prepayment payment address, and payment for and
+                        performance of TRON network energy rental (including to third-party addresses and orders placed
+                        by a Partner via the Business API), while adhering to the principles of privacy, transparency,
+                        and user autonomy.
+                        The service seeks to provide a secure environment for operations and, at the same time, to
+                        comply with international standards on anti-money laundering, counter-terrorist financing, and
+                        sanctions restrictions.
+                        This policy applies to all such operations through Exwell.<br><br>
+
+                        <h2>2. Operating model and privacy</h2><br>
+                        Exwell is focused on minimising the collection of users’ personal data.
+                        Under standard conditions, operations may be carried out without undergoing identity
+                        verification (KYC).
+                        At the same time, the service applies internal compliance controls that allow it to meet
+                        regulatory requirements without excessive interference with user privacy.<br><br>
+
+                        <h2>3. AML transaction monitoring</h2><br>
+                        All transactions passing through Exwell are automatically analysed using third-party blockchain
+                        analytics tools, including, among others, AMLBot, Crystal, Elliptic, or other equivalent
+                        services at Exwell’s choice.
+                        Such screening assesses the origin of funds, transaction history, and matches against
+                        international databases and risk categories.
+                        Each transaction is assigned a Risk Score used as part of a risk-based approach.<br><br>
+                        For cryptocurrency exchange, the procedure described below applies, with a Risk Score threshold
+                        of 30%.
+                        Incoming prepayment is subject to AML screening of the transfer; crediting to the unused
+                        prepayment balance may be deferred or refused based on the screening result.
+                        A TRON energy rental order is not an exchange of the user’s funds; an order to a third-party
+                        address may be refused if the address is sanctioned or high-risk.
+                        For personal-account and Business API operations, Exwell may apply the same or additional
+                        checks.<br><br>
+
+                        <h2>4. Risk-based approach</h2><br>
+                        The decision on how to process a transaction depends on the identified risk level.
+                        For cryptocurrency exchange: transactions with a Risk Score below 30% are processed in the
+                        ordinary course; transactions with a Risk Score of 30% or higher may be temporarily suspended
+                        for additional review, including KYC and/or Source of Funds confirmation.
+                        In addition to the numerical Risk Score, the service also takes into account extra risk labels,
+                        including indications of a link to stolen funds, fraud, ransomware, darknet resources,
+                        transaction-mixing services, sanctioned persons, and other elevated-risk sources.<br><br>
+
+                        <h2>5. Additional review</h2><br>
+                        If a transaction is identified as potentially risky, Exwell may initiate an enhanced review.
+                        Such a review may include the following:
+                        manual analysis of the transaction by compliance specialists;
+                        a request for information on the origin of funds (Source of Funds);
+                        a request to undergo identity verification (KYC).
+                        Until the review is completed, the transaction and related funds may remain temporarily
+                        suspended.
+                        Incomplete crediting of prepayment and the unused prepayment balance may be suspended for the
+                        duration of the review in the same way as an exchange: this is a service under review or not yet
+                        provided, not a client wallet.<br><br>
+
+                        <h2>6. When KYC may be required</h2><br>
+                        Exwell reserves the right to request a one-time KYC procedure in exceptional cases, including
+                        regulatory requirements, law-enforcement requests, court orders, sanctions checks, and other
+                        circumstances indicating a need for additional user identification.
+                        In such cases, the user may be directed to a vetted compliance partner to complete identity
+                        verification.
+                        The review period is typically up to 3 days.
+                        If the user refuses to undergo the requested review, the operation may be cancelled.
+                        For an exchange and for incoming prepayment not yet credited to the balance: funds may be
+                        returned to the sender less applicable network fees, if a return is technically possible.
+                        If prepayment has already been credited and no service has been ordered, the balance is unused
+                        prepayment; there is no withdrawal button. A return to the sender in that case is made only if
+                        Exwell itself cancels the credit (AML or a legal requirement).<br><br>
+
+                        <h2>7. Processing of personal data</h2><br>
+                        Exwell seeks to minimise storage of KYC documents on its own servers. Identification procedures
+                        are generally performed by third-party compliance partners in accordance with applicable legal
+                        requirements, including the GDPR and other international data-protection standards. This does
+                        not mean that Exwell does not process other personal data of the user (account data, operations
+                        data, support enquiries) — such data are governed by the Privacy Policy.<br><br>
+
+                        <h2>8. Requested materials</h2><br>
+                        As part of an additional review, the user may be required to provide documents and information
+                        necessary to complete the compliance procedure.
+                        For KYC, the following may be requested:
+                        a photo or scan of an identity document (passport, national identity card, or driving licence);
+                        a photograph of the user holding the identity document.
+
+                        To confirm the origin of funds (Source of Funds), the following may be requested:
+                        screenshots or statements from the wallet from which the transaction was sent;
+                        a history of operations confirming the origin of funds;
+                        screenshots of accounts at cryptocurrency exchanges or services through which the funds were
+                        received;
+                        an explanation of the source of funds.
+
+                        The service reserves the right to request additional materials if necessary to complete the
+                        review.<br><br>
+
+                        <h2>9. Review timeframes</h2><br>
+                        After all required materials have been received, the review typically takes up to 3 business
+                        days.
+                        Until the required information has been received and the review completed, the transaction may
+                        remain temporarily suspended.<br><br>
+
+                        <h2>10. Conditions for returning funds</h2><br>
+                        Following the review, the following outcomes are possible:
+                        completion of the exchange operation if no violations are identified;
+                        return of funds to the sender in respect of an exchange if the operation cannot be performed or
+                        the user refuses to undergo the review;
+                        return of funds to the sender in respect of incoming prepayment not yet credited to the balance,
+                        if crediting is refused or not possible;
+                        if prepayment has already been credited and no service has been ordered — unused prepayment; a
+                        return to the sender only if Exwell cancels the credit (AML or law), not as a withdrawal from
+                        the account;
+                        if an energy rental order has already been placed or performed — no return of prepayment: the
+                        service has been paid for;
+                        return of funds to the lawful owner if the service receives an official request or a binding
+                        order from competent law-enforcement authorities confirming the unlawful origin of the funds.
+                        Where a return is made, funds are sent to the relevant address in accordance with the review
+                        results and applicable legal requirements.
+                        If a return is made to the sender, funds are transferred to the original sender address within
+                        24 hours after completion of the review, and only the network fee required to execute the
+                        blockchain transaction may be deducted.
+                        In this policy, “funds” / “stablecoin” means the assets of the operation without reference to a
+                        specific ticker.<br><br>
+
+                        <h2>11. Holding period</h2><br>
+                        The period for which funds are held depends on the nature of the review and the circumstances of
+                        the particular case.
+                        In a standard review, funds may be held until the user has provided all required information and
+                        the review has been completed.
+                        In certain cases the holding period may be extended if required to comply with law or to fulfil
+                        official law-enforcement requests.<br><br>
+
+                        <h2>12. Restrictions on use of the service</h2><br>
+                        Exwell does not support or permit use of the service for money laundering, terrorist financing,
+                        or other unlawful activity.
+                        The service does not cooperate with persons or organisations involved in fraud, sanctions
+                        breaches, or other unlawful acts.
+                        Users’ funds in respect of an exchange are not frozen except as expressly provided by law, court
+                        decisions, or binding regulatory requirements, and for the duration of the review described in
+                        this policy.
+                        Incomplete crediting of prepayment and the unused prepayment balance may be suspended for the
+                        duration of a review on the same grounds.<br><br>
+
+                        <h2>13. Energy rental to a third-party address</h2><br>
+                        The user may specify any valid TRON network address as the energy rental recipient.
+                        Exwell may refuse an order if the address is sanctioned or high-risk.
+                        An energy rental order does not make Exwell responsible for subsequent transfers from that
+                        address.<br><br>
+
+                        <h2>14. For victims of theft</h2><br>
+                        If you have been a victim of cryptocurrency theft and believe that the relevant funds may have
+                        been transferred through Exwell (including credited as prepayment), you must contact support at
+                        <a href="mailto:support@exwell.io">support@exwell.io</a> (and/or via the form on the website)
+                        and provide a detailed description of the situation and available on-chain evidence.
+                        Documents from law-enforcement authorities relating to the relevant case may also be requested.
+                        Upon receiving an official legal request, Exwell may assist in tracing the transaction within
+                        the limits of its authority and applicable law.
+                        If the funds have already been exchanged, the service’s actions may be limited to the
+                        destination currency and may be taken solely on the basis of an official legal request.
+                        If the funds were credited as prepayment: the balance may be blocked; a return is made pursuant
+                        to law or to the sender, not as a withdrawal from the account.<br><br>
+
+                        <h2>15. Final provisions</h2><br><br>
+                        Exwell seeks to maintain a balance between users’ financial privacy and the performance of
+                        regulatory duties.
+                        Use of the service constitutes the user’s acceptance of this KYC/AML policy.
+
                     </div>
                 </div>
             </div>
